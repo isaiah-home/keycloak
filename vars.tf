@@ -38,3 +38,9 @@ variable "db_wikijs_password" {
   type    = string
   default = "password"
 }
+
+# --== Nginx ==-- #
+variable "domain" {
+  type    = string
+  default = "ivcode.org"
+}

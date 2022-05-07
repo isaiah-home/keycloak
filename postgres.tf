@@ -31,6 +31,6 @@ resource "docker_container" "db" {
 }
 
 resource "time_sleep" "db" {
-  create_duration = "30s"
+  create_duration  = "30s"
   depends_on = [docker_container.db]
 }
