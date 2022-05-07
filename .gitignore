@@ -1,6 +1,9 @@
 # Notepad++
 *.bak
 
+#IntelliJ
+.idea/**
+
 #Terraform
 .terraform/**
 *.tfstate

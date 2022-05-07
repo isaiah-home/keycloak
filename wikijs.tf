@@ -31,7 +31,7 @@ resource "docker_container" "wikijs" {
   ]
   networks_advanced {
     name    = docker_network.home_network.name
-	aliases = ["keycloak"]
+	aliases = ["wikijs"]
   }
   ports {
     internal = 3000
