@@ -17,7 +17,7 @@ resource "docker_container" "nginx" {
   }
   volumes {
     container_path = "/etc/nginx/nginx.conf"
-    host_path      = "${path.module}/Nginx/nginx.conf"
+    host_path      = "${abspath(path.module)}/Nginx/nginx.conf"
     read_only      = true
   }
   depends_on = [
