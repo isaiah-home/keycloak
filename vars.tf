@@ -1,5 +1,9 @@
-# --== Database ==-- #
+# --== General ==-- #
+variable "install_root" {
+  type = string
+}
 
+# --== Database ==-- #
 # admin
 variable "db_admin_name" {
   type    = string

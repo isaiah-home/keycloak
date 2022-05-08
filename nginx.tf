@@ -15,10 +15,19 @@ resource "docker_container" "nginx" {
     internal = 80
     external = 80
   }
+  ports {
+    internal = 443
+    external = 443
+  }
   volumes {
     container_path = "/etc/nginx/nginx.conf"
-    host_path      = "${abspath(path.module)}/Nginx/nginx.conf"
+    host_path      = "${var.install_root}/nginx/nginx.conf"
     read_only      = true
+  }
+  volumes {
+    container_path = "/usr/share/nginx/html/"
+    host_path      = "${var.install_root}/nginx/html/"
+    read_only      = false
   }
   depends_on = [
     local_file.nginx_conf,
@@ -27,9 +36,14 @@ resource "docker_container" "nginx" {
   ]
 }
 
+resource "local_file" "index_html" {
+  filename = "${var.install_root}/nginx/html/index.html"
+  content = "this is a test"
+}
+
 resource "local_file" "nginx_conf" {
-  filename = "${path.module}/Nginx/nginx.conf"
-  content = <<EOT
+  filename = "${var.install_root}/nginx/nginx.conf"
+  content  = <<EOT
 user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -92,5 +106,6 @@ http {
         }
     }
 }
+
 EOT
 }
