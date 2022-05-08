@@ -1,9 +1,10 @@
 # Terraform
 Sets up the home services
 
-## Envoirnment
- * Ubuntu-Server (Raspberry Pi)
- * Terraform v1.1.9
+## Server Envoirnment
+ * Ubuntu Server 22.04 LTS (x86_64)
+ * Docker
+ * Terraform
 
 ## Setup
 
