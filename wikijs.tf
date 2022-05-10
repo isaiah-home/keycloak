@@ -1,15 +1,22 @@
-resource "postgresql_role" "wikijs_role" {
-  provider   = postgresql.home_db
-  name       = "${var.db_wikijs_name}"
-  password   = "${var.db_wikijs_password}"
-  login      = true
-  depends_on = [time_sleep.db]
+resource "mysql_database" "wikijs" {
+  default_character_set = "utf8mb3"
+  name                  = "wikijs"
+  depends_on = [docker_container.mysql]
 }
 
-resource "postgresql_database" "wikijs_db" {
-  provider   = postgresql.home_db
-  name       = "wikijs"
-  owner      = postgresql_role.keycloak_role.name
+resource "mysql_user" "wikijs" {
+  user               = "${var.db_wikijs_username}"
+  host               = "172.22.0.4"
+  plaintext_password = "${var.db_wikijs_password}"
+  depends_on = [docker_container.mysql]
+}
+
+resource "mysql_grant" "wikijs" {
+  user = "${mysql_user.wikijs.user}"
+  host = "${mysql_user.wikijs.host}"
+  database = "${mysql_database.wikijs.name}"
+  privileges = ["ALL PRIVILEGES"]
+  depends_on = [mysql_user.wikijs, mysql_database.wikijs]
 }
 
 resource "docker_image" "wikijs" {
@@ -22,20 +29,21 @@ resource "docker_container" "wikijs" {
   name          = "wikijs"
   hostname      = "wikijs"
   env   = [
-    "DB_TYPE=postgres",
-	"DB_HOST=db",
-	"DB_PORT=5432",
-	"DB_USER=${var.db_wikijs_name}",
-	"DB_PASS=${var.db_wikijs_password}",
-	"DB_NAME=wikijs"
+    "DB_TYPE=mysql",
+    "DB_HOST=mysql",
+    "DB_PORT=3306",
+    "DB_USER=${var.db_wikijs_username}",
+    "DB_PASS=${var.db_wikijs_password}",
+    "DB_NAME=wikijs"
   ]
   networks_advanced {
     name    = docker_network.home_network.name
-	aliases = ["wikijs"]
+    aliases = ["wikijs"]
+    ipv4_address = "172.22.0.4"
   }
   ports {
     internal = 3000
     external = 3000
   }
-  depends_on = [postgresql_database.wikijs_db]
+  depends_on = [mysql_grant.wikijs, mysql_user.wikijs, mysql_database.wikijs]
 }

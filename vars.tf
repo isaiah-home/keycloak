@@ -1,26 +1,17 @@
-# --== General ==-- #
-variable "install_root" {
-  type = string
-}
-
-# --== Database ==-- #
-# admin
-variable "db_admin_name" {
-  type    = string
-}
-variable "db_admin_password" {
+# --== MySQL ==-- #
+variable "mysql_password" {
   type    = string
 }
 
 # --== Keycloak ==-- #
 # keycloak
-variable "db_keycloak_name" {
+variable "db_keycloak_username" {
   type    = string
 }
 variable "db_keycloak_password" {
   type    = string
 }
-variable "keycloak_user" {
+variable "keycloak_username" {
   type    = string
 }
 variable "keycloak_password" {
@@ -28,7 +19,7 @@ variable "keycloak_password" {
 }
 
 # --== WikiJS ==-- #
-variable "db_wikijs_name" {
+variable "db_wikijs_username" {
   type    = string
 }
 variable "db_wikijs_password" {
