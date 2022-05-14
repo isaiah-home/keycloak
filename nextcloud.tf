@@ -34,7 +34,10 @@ resource "docker_container" "nextcloud" {
     "MYSQL_USER=${var.db_nextcloud_username}",
     "MYSQL_PASSWORD=${var.db_nextcloud_password}",
     "MYSQL_DATABASE=nextcloud",
-    "NEXTCLOUD_TRUSTED_DOMAINS=ivcode.org"
+    "OVERWRITEPROTOCOL=https",
+    "NEXTCLOUD_ADMIN_USER=${var.nextcloud_username}",
+    "NEXTCLOUD_ADMIN_PASSWORD=${var.nextcloud_password}",
+    "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.ivcode.org"
   ]
   networks_advanced {
     name    = docker_network.home_network.name
@@ -44,6 +47,10 @@ resource "docker_container" "nextcloud" {
   ports {
     internal = 80
     external = 8000
+  }
+  volumes {
+    container_path = "/config/config.php"
+    host_path      = "${var.install_root}/nextcloud"
   }
   depends_on = [mysql_grant.nextcloud, mysql_user.nextcloud, mysql_database.nextcloud]
 }
