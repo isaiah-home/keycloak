@@ -5,9 +5,9 @@ resource "mysql_database" "keycloak" {
 }
 
 resource "mysql_user" "keycloak" {
-  user               = "${var.db_keycloak_username}"
+  user               = "${data.aws_ssm_parameter.keycloak_db_username.value}"
   host               = "172.22.0.3"
-  plaintext_password = "${var.db_keycloak_password}"
+  plaintext_password = "${data.aws_ssm_parameter.keycloak_db_password.value}"
   depends_on = [docker_container.mysql]
 }
 
@@ -29,14 +29,14 @@ resource "docker_container" "keycloak" {
   name          = "keycloak"
   hostname      = "keycloak"
   env   = [
-    "KEYCLOAK_USER=${var.keycloak_username}",
-    "KEYCLOAK_PASSWORD=${var.keycloak_password}",
+    "KEYCLOAK_USER=${data.aws_ssm_parameter.keycloak_username.value}",
+    "KEYCLOAK_PASSWORD=${data.aws_ssm_parameter.keycloak_password.value}",
     "DB_VENDOR=mysql",
     "DB_ADDR=mysql",
     "DB_PORT=3306",
     "DB_DATABASE=keycloak",
-    "DB_USER=${var.db_keycloak_username}",
-    "DB_PASSWORD=${var.db_keycloak_password}",
+    "DB_USER=${data.aws_ssm_parameter.keycloak_db_username.value}",
+    "DB_PASSWORD=${data.aws_ssm_parameter.keycloak_db_password.value}",
     "PROXY_ADDRESS_FORWARDING=true",
     "JDBC_PARAMS=connectTimeout=30"
   ]

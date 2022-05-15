@@ -1,7 +1,7 @@
 provider "mysql" {
   endpoint = "localhost:3306"
   username = "root"
-  password = var.mysql_password
+  password = data.aws_ssm_parameter.mysql_password.value
 }
 
 resource "docker_image" "mysql" {
@@ -14,7 +14,7 @@ resource "docker_container" "mysql" {
   name     = "mysql"
   hostname = "mysql"
   env   = [
-    "MYSQL_ROOT_PASSWORD=${var.mysql_password}"
+    "MYSQL_ROOT_PASSWORD=${data.aws_ssm_parameter.mysql_password.value}"
   ]
   networks_advanced {
     name    = docker_network.home_network.name
