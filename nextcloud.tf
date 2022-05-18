@@ -5,9 +5,9 @@ resource "mysql_database" "nextcloud" {
 }
 
 resource "mysql_user" "nextcloud" {
-  user               = "${var.db_nextcloud_username}"
+  user               = "${data.aws_ssm_parameter.nextcloud_db_username.value}"
   host               = "172.22.0.5"
-  plaintext_password = "${var.db_nextcloud_password}"
+  plaintext_password = "${data.aws_ssm_parameter.nextcloud_db_password.value}"
   depends_on = [docker_container.mysql]
 }
 
@@ -26,31 +26,27 @@ resource "docker_image" "nextcloud" {
 
 resource "docker_container" "nextcloud" {
   image         = docker_image.nextcloud.latest
-  name          = "nextcloud"
+  name          = "organize-me-nextcloud"
   hostname      = "nextcloud"
   env   = [
     "MYSQL_HOST=mysql",
     "DB_PORT=3306",
-    "MYSQL_USER=${var.db_nextcloud_username}",
-    "MYSQL_PASSWORD=${var.db_nextcloud_password}",
+    "MYSQL_USER=${data.aws_ssm_parameter.nextcloud_db_username.value}",
+    "MYSQL_PASSWORD=${data.aws_ssm_parameter.nextcloud_db_password.value}",
     "MYSQL_DATABASE=nextcloud",
     "OVERWRITEPROTOCOL=https",
-    "NEXTCLOUD_ADMIN_USER=${var.nextcloud_username}",
-    "NEXTCLOUD_ADMIN_PASSWORD=${var.nextcloud_password}",
+    "NEXTCLOUD_ADMIN_USER=${data.aws_ssm_parameter.nextcloud_username.value}",
+    "NEXTCLOUD_ADMIN_PASSWORD=${data.aws_ssm_parameter.nextcloud_password.value}",
     "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.ivcode.org"
   ]
   networks_advanced {
-    name    = docker_network.home_network.name
+    name    = docker_network.organize_me_network.name
     aliases = ["nextcloud"]
     ipv4_address = "172.22.0.5"
   }
   ports {
     internal = 80
     external = 8000
-  }
-  volumes {
-    container_path = "/config/config.php"
-    host_path      = "${var.install_root}/nextcloud"
   }
   depends_on = [mysql_grant.nextcloud, mysql_user.nextcloud, mysql_database.nextcloud]
 }

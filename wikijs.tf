@@ -5,9 +5,9 @@ resource "mysql_database" "wikijs" {
 }
 
 resource "mysql_user" "wikijs" {
-  user               = "${var.db_wikijs_username}"
+  user               = "${data.aws_ssm_parameter.wikijs_db_username.value}"
   host               = "172.22.0.4"
-  plaintext_password = "${var.db_wikijs_password}"
+  plaintext_password = "${data.aws_ssm_parameter.wikijs_db_password.value}"
   depends_on = [docker_container.mysql]
 }
 
@@ -26,18 +26,19 @@ resource "docker_image" "wikijs" {
 
 resource "docker_container" "wikijs" {
   image         = docker_image.wikijs.latest
-  name          = "wikijs"
+  name          = "organize-me-wikijs"
   hostname      = "wikijs"
   env   = [
+    "TZ=${var.timezone}",
     "DB_TYPE=mysql",
     "DB_HOST=mysql",
     "DB_PORT=3306",
-    "DB_USER=${var.db_wikijs_username}",
-    "DB_PASS=${var.db_wikijs_password}",
+    "DB_USER=${data.aws_ssm_parameter.wikijs_db_username.value}",
+    "DB_PASS=${data.aws_ssm_parameter.wikijs_db_password.value}",
     "DB_NAME=wikijs"
   ]
   networks_advanced {
-    name    = docker_network.home_network.name
+    name    = docker_network.organize_me_network.name
     aliases = ["wikijs"]
     ipv4_address = "172.22.0.4"
   }

@@ -14,8 +14,8 @@ terraform {
 provider "docker" {
 }
 
-resource "docker_network" "home_network" {
-  name   = "home_network"
+resource "docker_network" "organize_me_network" {
+  name   = "organize_me_network"
   driver = "bridge"
 
   ipam_config {

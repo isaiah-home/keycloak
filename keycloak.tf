@@ -26,7 +26,7 @@ resource "docker_image" "keycloak" {
 
 resource "docker_container" "keycloak" {
   image         = docker_image.keycloak.latest
-  name          = "keycloak"
+  name          = "organize-me-keycloak"
   hostname      = "keycloak"
   env   = [
     "KEYCLOAK_USER=${data.aws_ssm_parameter.keycloak_username.value}",
@@ -41,7 +41,7 @@ resource "docker_container" "keycloak" {
     "JDBC_PARAMS=connectTimeout=30"
   ]
   networks_advanced {
-    name    = docker_network.home_network.name
+    name    = docker_network.organize_me_network.name
     aliases = ["keycloak"]
     ipv4_address = "172.22.0.3"
   }

@@ -5,9 +5,9 @@ resource "mysql_database" "snipeit" {
 }
 
 resource "mysql_user" "snipeit" {
-  user               = "${var.snipeit_db_username}"
+  user               = "${data.aws_ssm_parameter.snipeit_db_username.value}"
   host               = "172.22.0.6"
-  plaintext_password = "${var.snipeit_db_password}"
+  plaintext_password = "${data.aws_ssm_parameter.snipeit_db_password.value}"
   depends_on = [docker_container.mysql]
 }
 
@@ -26,31 +26,32 @@ resource "docker_image" "snipeit" {
 
 resource "docker_container" "snipeit" {
   image         = docker_image.snipeit.latest
-  name          = "snipeit"
+  name          = "organize-me-snipeit"
   hostname      = "snipeit"
   env   = [
+    "TZ=${var.timezone}",
     "MYSQL_PORT_3306_TCP_ADDR=mysql",
     "MYSQL_PORT_3306_TCP_PORT=3306",
-    "MYSQL_DATABASE=${mysql_database.snipeit.name}",
-    "MYSQL_USER=${var.snipeit_db_username}",
-    "MYSQL_PASSWORD=${var.snipeit_db_password}",
-    "MAIL_PORT_587_TCP_ADDR=${var.smtp_host}",
-    "MAIL_PORT_587_TCP_PORT=${var.smtp_port}",
-    "MAIL_ENV_FROM_ADDR=${var.snipeit_email_from_addr}",
-    "MAIL_ENV_FROM_NAME=${var.snipeit_email_from_name}",
+    "MYSQL_DATABASE=snipeit",
+    "MYSQL_USER=${data.aws_ssm_parameter.snipeit_db_username.value}",
+    "MYSQL_PASSWORD=${data.aws_ssm_parameter.snipeit_db_password.value}",
+    "MAIL_PORT_587_TCP_ADDR=${data.aws_ssm_parameter.smtp_host.value}",
+    "MAIL_PORT_587_TCP_PORT=${data.aws_ssm_parameter.smtp_port.value}",
+    "MAIL_ENV_FROM_ADDR=noreply@${var.domain}",
+    "MAIL_ENV_FROM_NAME=Snipe-IT",
     "MAIL_ENV_ENCRYPTION=tls",
-    "MAIL_ENV_USERNAME=${var.smtp_username}",
-    "MAIL_ENV_PASSWORD=${var.smtp_password}",
+    "MAIL_ENV_USERNAME=${data.aws_ssm_parameter.smtp_username.value}",
+    "MAIL_ENV_PASSWORD=${data.aws_ssm_parameter.smtp_password.value}",
     "APP_ENV=production",
     "APP_DEBUG=false",
-    "APP_KEY=${var.snipeit_appkey}",
-    "APP_URL=${var.snipeit_url}",
+    "APP_KEY=${data.aws_ssm_parameter.snipeit_appkey.value}",
+    "APP_URL=https://snipeit.${var.domain}",
     "APP_TRUSTED_PROXIES=172.22.0.0/16",
-    "APP_TIMEZONE=${var.snipeit_timezone}",
-    "APP_LOCALE=${var.snipeit_locale}"
+    "APP_TIMEZONE=${var.timezone}",
+    "APP_LOCALE=en"
   ]
   networks_advanced {
-    name    = docker_network.home_network.name
+    name    = docker_network.organize_me_network.name
     aliases = ["snipeit"]
     ipv4_address = "172.22.0.6"
   }
