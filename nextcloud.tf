@@ -29,6 +29,7 @@ resource "docker_container" "nextcloud" {
   name          = "organize-me-nextcloud"
   hostname      = "nextcloud"
   env   = [
+    "TZ=${var.timezone}",
     "MYSQL_HOST=mysql",
     "DB_PORT=3306",
     "MYSQL_USER=${data.aws_ssm_parameter.nextcloud_db_username.value}",

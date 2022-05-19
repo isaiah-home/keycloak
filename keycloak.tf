@@ -29,6 +29,7 @@ resource "docker_container" "keycloak" {
   name          = "organize-me-keycloak"
   hostname      = "keycloak"
   env   = [
+    "TZ=${var.timezone}",
     "KEYCLOAK_USER=${data.aws_ssm_parameter.keycloak_username.value}",
     "KEYCLOAK_PASSWORD=${data.aws_ssm_parameter.keycloak_password.value}",
     "DB_VENDOR=mysql",
