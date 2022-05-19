@@ -37,7 +37,7 @@ resource "docker_container" "nextcloud" {
     "OVERWRITEPROTOCOL=https",
     "NEXTCLOUD_ADMIN_USER=${data.aws_ssm_parameter.nextcloud_username.value}",
     "NEXTCLOUD_ADMIN_PASSWORD=${data.aws_ssm_parameter.nextcloud_password.value}",
-    "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.ivcode.org"
+    "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.${var.domain}"
   ]
   networks_advanced {
     name    = docker_network.organize_me_network.name
