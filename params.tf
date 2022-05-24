@@ -52,6 +52,15 @@ data "aws_ssm_parameter" "nextcloud_username" {
 data "aws_ssm_parameter" "nextcloud_password" {
   name = "organize-me.nextcloud_password"
 }
+data "aws_ssm_parameter" "nextcloud_access_key" {
+  name = "organize-me.nextcloud_access_key"
+}
+data "aws_ssm_parameter" "nextcloud_secret_access_key" {
+  name = "organize-me.nextcloud_secret_access_key"
+}
+data "aws_ssm_parameter" "nextcloud_region" {
+  name = "organize-me.nextcloud_region"
+}
 
 # --== Snipe-IT ==-- #
 data "aws_ssm_parameter" "snipeit_db_username" {

@@ -20,7 +20,7 @@ resource "mysql_grant" "nextcloud" {
 }
 
 resource "docker_image" "nextcloud" {
-  name         = "nextcloud:23-apache"
+  name         = "nextcloud:24.0-apache"
   keep_locally = true
 }
 
@@ -38,7 +38,19 @@ resource "docker_container" "nextcloud" {
     "OVERWRITEPROTOCOL=https",
     "NEXTCLOUD_ADMIN_USER=${data.aws_ssm_parameter.nextcloud_username.value}",
     "NEXTCLOUD_ADMIN_PASSWORD=${data.aws_ssm_parameter.nextcloud_password.value}",
-    "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.${var.domain}"
+    "NEXTCLOUD_TRUSTED_DOMAINS=nextcloud.${var.domain}",
+    "OBJECTSTORE_S3_BUCKET=nextcloud.${var.domain}",
+    "OBJECTSTORE_S3_KEY=${data.aws_ssm_parameter.nextcloud_access_key.value}",
+    "OBJECTSTORE_S3_SECRET=${data.aws_ssm_parameter.nextcloud_secret_access_key.value}",
+    "OBJECTSTORE_S3_REGION=${data.aws_ssm_parameter.nextcloud_region.value}",
+    "OBJECTSTORE_S3_AUTOCREATE=false",
+    "SMTP_HOST=${data.aws_ssm_parameter.smtp_host.value}",
+    "SMTP_SECURE=tls",
+    "SMTP_PORT=${data.aws_ssm_parameter.smtp_port.value}",
+    "SMTP_NAME=${data.aws_ssm_parameter.smtp_username.value}",
+    "SMTP_PASSWORD=${data.aws_ssm_parameter.smtp_password.value}",
+    "MAIL_FROM_ADDRESS=noreplay",
+    "MAIL_DOMAIN=${var.domain}"
   ]
   networks_advanced {
     name    = docker_network.organize_me_network.name
