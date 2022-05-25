@@ -1,4 +1,4 @@
-# Terraform
+# terraform-local
 Sets up the home services on the local machine
 
 ## Services
