@@ -8,7 +8,8 @@ Sets up the home services on the local machine
 * snipe-it (inventory)
 
 ## Notes
- * terraform-local uses variables defined in the ```env.sh``` script setup in the ```init``` repo.
+ * Uses variables defined in the ```env.sh``` script setup in the ```init``` repo.
+ * Uses aws paramiters defined in the ```init``` repo.
 
 ## Run Terraform
 ```
