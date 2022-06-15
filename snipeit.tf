@@ -28,6 +28,7 @@ resource "docker_container" "snipeit" {
   image         = docker_image.snipeit.latest
   name          = "organize-me-snipeit"
   hostname      = "snipeit"
+  restart       = "unless-stopped"
   env   = [
     "TZ=${var.timezone}",
     "MYSQL_PORT_3306_TCP_ADDR=mysql",

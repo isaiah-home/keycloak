@@ -28,6 +28,7 @@ resource "docker_container" "keycloak" {
   image         = docker_image.keycloak.latest
   name          = "organize-me-keycloak"
   hostname      = "keycloak"
+  restart       = "unless-stopped"
   env   = [
     "TZ=${var.timezone}",
     "KEYCLOAK_USER=${data.aws_ssm_parameter.keycloak_username.value}",

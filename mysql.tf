@@ -13,6 +13,7 @@ resource "docker_container" "mysql" {
   image    = docker_image.mysql.latest
   name     = "organize-me-mysql"
   hostname = "mysql"
+  restart  = "unless-stopped"
   env   = [
     "MYSQL_ROOT_PASSWORD=${data.aws_ssm_parameter.mysql_password.value}"
   ]

@@ -28,6 +28,7 @@ resource "docker_container" "wikijs" {
   image         = docker_image.wikijs.latest
   name          = "organize-me-wikijs"
   hostname      = "wikijs"
+  restart       = "unless-stopped"
   env   = [
     "TZ=${var.timezone}",
     "DB_TYPE=mysql",

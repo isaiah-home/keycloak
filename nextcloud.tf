@@ -28,6 +28,7 @@ resource "docker_container" "nextcloud" {
   image         = docker_image.nextcloud.latest
   name          = "organize-me-nextcloud"
   hostname      = "nextcloud"
+  restart       = "unless-stopped"
   env   = [
     "TZ=${var.timezone}",
     "MYSQL_HOST=mysql",
