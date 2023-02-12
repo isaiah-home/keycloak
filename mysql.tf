@@ -5,12 +5,12 @@ provider "mysql" {
 }
 
 resource "docker_image" "mysql" {
-  name         = "mysql:8.0"
+  name         = "mysql:8"
   keep_locally = true
 }
 
 resource "docker_container" "mysql" {
-  image    = docker_image.mysql.latest
+  image    = docker_image.mysql.image_id
   name     = "organize-me-mysql"
   hostname = "mysql"
   restart  = "unless-stopped"

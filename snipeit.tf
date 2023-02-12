@@ -25,7 +25,7 @@ resource "docker_image" "snipeit" {
 }
 
 resource "docker_container" "snipeit" {
-  image         = docker_image.snipeit.latest
+  image         = docker_image.snipeit.image_id
   name          = "organize-me-snipeit"
   hostname      = "snipeit"
   restart       = "unless-stopped"

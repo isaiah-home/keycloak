@@ -25,7 +25,7 @@ resource "docker_image" "wikijs" {
 }
 
 resource "docker_container" "wikijs" {
-  image         = docker_image.wikijs.latest
+  image         = docker_image.wikijs.image_id
   name          = "organize-me-wikijs"
   hostname      = "wikijs"
   restart       = "unless-stopped"

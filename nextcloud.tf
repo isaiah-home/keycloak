@@ -25,7 +25,7 @@ resource "docker_image" "nextcloud" {
 }
 
 resource "docker_container" "nextcloud" {
-  image         = docker_image.nextcloud.latest
+  image         = docker_image.nextcloud.image_id
   name          = "organize-me-nextcloud"
   hostname      = "nextcloud"
   restart       = "unless-stopped"

@@ -25,7 +25,7 @@ resource "docker_image" "keycloak" {
 }
 
 resource "docker_container" "keycloak" {
-  image         = docker_image.keycloak.latest
+  image         = docker_image.keycloak.image_id
   name          = "organize-me-keycloak"
   hostname      = "keycloak"
   restart       = "unless-stopped"
