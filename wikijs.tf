@@ -20,7 +20,7 @@ resource "mysql_grant" "wikijs" {
 }
 
 resource "docker_image" "wikijs" {
-  name         = "ghcr.io/requarks/wiki:2"
+  name         = "requarks/wiki:2.5"
   keep_locally = true
 }
 

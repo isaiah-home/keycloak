@@ -20,7 +20,7 @@ resource "mysql_grant" "keycloak" {
 }
 
 resource "docker_image" "keycloak" {
-  name         = "jboss/keycloak:16.1.1"
+  name         = "quay.io/keycloak/keycloak:20.0.3"
   keep_locally = true
 }
 
@@ -29,18 +29,19 @@ resource "docker_container" "keycloak" {
   name          = "organize-me-keycloak"
   hostname      = "keycloak"
   restart       = "unless-stopped"
+  command	= ["start-dev", "--http-relative-path", "/auth"]
   env   = [
     "TZ=${var.timezone}",
-    "KEYCLOAK_USER=${data.aws_ssm_parameter.keycloak_username.value}",
-    "KEYCLOAK_PASSWORD=${data.aws_ssm_parameter.keycloak_password.value}",
-    "DB_VENDOR=mysql",
-    "DB_ADDR=mysql",
-    "DB_PORT=3306",
-    "DB_DATABASE=keycloak",
-    "DB_USER=${data.aws_ssm_parameter.keycloak_db_username.value}",
-    "DB_PASSWORD=${data.aws_ssm_parameter.keycloak_db_password.value}",
-    "PROXY_ADDRESS_FORWARDING=true",
-    "JDBC_PARAMS=connectTimeout=30"
+    "KEYCLOAK_ADMIN=${data.aws_ssm_parameter.keycloak_username.value}",
+    "KEYCLOAK_ADMIN_PASSWORD=${data.aws_ssm_parameter.keycloak_password.value}",
+    "KC_DB=mysql",
+    "KC_DB_URL_HOST=mysql",
+    "KC_DB_URL_PORT=3306",
+    "KC_DB_URL_DATABASE=keycloak",
+    "KC_DB_USERNAME=${data.aws_ssm_parameter.keycloak_db_username.value}",
+    "KC_DB_PASSWORD=${data.aws_ssm_parameter.keycloak_db_password.value}",
+    "KC_DB_URL_PROPERTIES=?connectTimeout=30",
+    "KC_PROXY=passthrough"
   ]
   networks_advanced {
     name    = docker_network.organize_me_network.name
