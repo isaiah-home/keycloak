@@ -20,7 +20,7 @@ resource "mysql_grant" "nextcloud" {
 }
 
 resource "docker_image" "nextcloud" {
-  name         = "nextcloud:24.0-apache"
+  name         = "nextcloud:25.0.3-apache"
   keep_locally = true
 }
 
@@ -53,6 +53,10 @@ resource "docker_container" "nextcloud" {
     "MAIL_FROM_ADDRESS=noreplay",
     "MAIL_DOMAIN=${var.domain}"
   ]
+  volumes {
+    container_path = "/var/www/html/"
+    host_path      = "${var.install_root}/nextcloud/var/www/html"
+  }
   networks_advanced {
     name    = docker_network.organize_me_network.name
     aliases = ["nextcloud"]

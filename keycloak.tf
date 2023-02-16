@@ -32,8 +32,8 @@ resource "docker_container" "keycloak" {
   command	= ["start-dev", "--http-relative-path", "/auth"]
   env   = [
     "TZ=${var.timezone}",
-    "KEYCLOAK_ADMIN=${data.aws_ssm_parameter.keycloak_username.value}",
-    "KEYCLOAK_ADMIN_PASSWORD=${data.aws_ssm_parameter.keycloak_password.value}",
+    #"KEYCLOAK_ADMIN=${data.aws_ssm_parameter.keycloak_username.value}",
+    #"KEYCLOAK_ADMIN_PASSWORD=${data.aws_ssm_parameter.keycloak_password.value}",
     "KC_DB=mysql",
     "KC_DB_URL_HOST=mysql",
     "KC_DB_URL_PORT=3306",
