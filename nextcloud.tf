@@ -1,5 +1,6 @@
 resource "mysql_database" "nextcloud" {
   default_character_set = "utf8mb3"
+  default_collation     = "utf8mb3_general_ci"
   name                  = "nextcloud"
   depends_on = [docker_container.mysql]
 }

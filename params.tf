@@ -72,3 +72,14 @@ data "aws_ssm_parameter" "snipeit_db_password" {
 data "aws_ssm_parameter" "snipeit_appkey" {
   name = "organize-me.snipeit_appkey"
 }
+
+# --== Vaultwarden ==-- #
+data "aws_ssm_parameter" "vaultwarden_db_username" {
+  name = "organize-me.vaultwarden_db_username"
+}
+data "aws_ssm_parameter" "vaultwarden_db_password" {
+  name = "organize-me.vaultwarden_db_password"
+}
+data "aws_ssm_parameter" "vaultwarden_admin_token" {
+  name = "organize-me.vaultwarden_admin_token"
+}

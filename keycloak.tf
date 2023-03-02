@@ -1,5 +1,6 @@
 resource "mysql_database" "keycloak" {
   default_character_set = "utf8mb3"
+  default_collation     = "utf8mb3_general_ci"
   name = "keycloak"
   depends_on = [docker_container.mysql]
 }

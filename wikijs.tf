@@ -1,5 +1,6 @@
 resource "mysql_database" "wikijs" {
   default_character_set = "utf8mb3"
+  default_collation     = "utf8mb3_general_ci"
   name                  = "wikijs"
   depends_on = [docker_container.mysql]
 }
