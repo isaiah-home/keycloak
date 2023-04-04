@@ -8,6 +8,7 @@ Sets up the home services on the local machine
 * Nextcloud (files, notes, calendar, etc..)
 * Snipe-IT (inventory)
 * Vaultwarden (password manager)
+* Pi-hole (network ad-blocker / local dns)
 
 ## Notes
  * Uses variables defined in the ```env.sh``` script setup in the ```init``` repo.
