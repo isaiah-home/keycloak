@@ -1,5 +1,5 @@
 resource "docker_image" "pihole" {
-  name = "pihole/pihole:2023.05.2"
+  name = "pihole/pihole:2023.10.0"
   keep_locally = true
 }
 
@@ -9,8 +9,7 @@ resource "docker_container" "pihole" {
   hostname = "pihole"
   restart  = "unless-stopped"
   env = [
-    "TZ=${var.timezone}",
-    "WEBPASSWORD=${data.aws_ssm_parameter.pihole_webpassword.value}"
+    "TZ=${var.timezone}"
   ]
   volumes {
     container_path = "/etc/pihole"
@@ -39,11 +38,6 @@ resource "docker_container" "pihole" {
     internal = 67
     external = 67
     protocol = "udp"
-  }
-  ports {
-    internal = 80
-    external = 8888
-    protocol = "tcp"
   }
   capabilities {
     add = ["NET_ADMIN"]
