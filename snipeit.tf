@@ -21,7 +21,7 @@ resource "mysql_grant" "snipeit" {
 }
 
 resource "docker_image" "snipeit" {
-  name         = "snipe/snipe-it:v5.4.4"
+  name         = "snipe/snipe-it:v6.2.3"
   keep_locally = true
 }
 
