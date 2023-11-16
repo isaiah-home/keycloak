@@ -21,7 +21,7 @@ resource "mysql_grant" "vaultwarden" {
 }
 
 resource "docker_image" "vaultwarden" {
-  name         = "vaultwarden/server:1.27.0"
+  name         = "vaultwarden/server:1.30.0"
   keep_locally = true
 }
 
