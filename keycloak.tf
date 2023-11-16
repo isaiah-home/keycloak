@@ -21,7 +21,7 @@ resource "mysql_grant" "keycloak" {
 }
 
 resource "docker_image" "keycloak" {
-  name         = "quay.io/keycloak/keycloak:20.0.3"
+  name         = "quay.io/keycloak/keycloak:22.0.5"
   keep_locally = true
 }
 
@@ -42,7 +42,7 @@ resource "docker_container" "keycloak" {
     "KC_DB_USERNAME=${data.aws_ssm_parameter.keycloak_db_username.value}",
     "KC_DB_PASSWORD=${data.aws_ssm_parameter.keycloak_db_password.value}",
     "KC_DB_URL_PROPERTIES=?connectTimeout=30",
-    "KC_PROXY=passthrough"
+    "KC_PROXY=edge"
   ]
   networks_advanced {
     name    = docker_network.organize_me_network.name
