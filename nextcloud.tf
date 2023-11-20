@@ -21,7 +21,7 @@ resource "mysql_grant" "nextcloud" {
 }
 
 resource "docker_image" "nextcloud" {
-  name         = "nextcloud:25.0.3-apache"
+  name         = "nextcloud:27.1.3-apache"
   keep_locally = true
 }
 
