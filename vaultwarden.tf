@@ -2,14 +2,12 @@ resource "mysql_database" "vaultwarden" {
   default_character_set = "utf8mb3"
   default_collation     = "utf8mb3_general_ci"
   name = "vaultwarden"
-  depends_on = [docker_container.mysql]
 }
 
 resource "mysql_user" "vaultwarden" {
   user               = "${data.aws_ssm_parameter.vaultwarden_db_username.value}"
   host               = "172.22.0.8"
   plaintext_password = "${data.aws_ssm_parameter.vaultwarden_db_password.value}"
-  depends_on = [docker_container.mysql]
 }
 
 resource "mysql_grant" "vaultwarden" {
@@ -61,7 +59,7 @@ resource "docker_container" "vaultwarden" {
     host_path      = "${var.install_root}/vaultwarden/data/"
   }
   networks_advanced {
-    name    = docker_network.organize_me_network.name
+    name    = data.docker_network.organize_me_network.name
     aliases = ["vaultwarden"]
     ipv4_address = "172.22.0.8"
   }

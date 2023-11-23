@@ -20,7 +20,7 @@ resource "docker_container" "pihole" {
     host_path      = "${var.install_root}/pihole/etc/dnsmasq.d"
   }
   networks_advanced {
-    name    = docker_network.organize_me_network.name
+    name    = data.docker_network.organize_me_network.name
     aliases = ["pihole"]
     ipv4_address = "172.22.0.15"
   }

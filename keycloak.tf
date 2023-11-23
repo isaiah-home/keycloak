@@ -2,14 +2,12 @@ resource "mysql_database" "keycloak" {
   default_character_set = "utf8mb3"
   default_collation     = "utf8mb3_general_ci"
   name = "keycloak"
-  depends_on = [docker_container.mysql]
 }
 
 resource "mysql_user" "keycloak" {
   user               = "${data.aws_ssm_parameter.keycloak_db_username.value}"
   host               = "172.22.0.3"
   plaintext_password = "${data.aws_ssm_parameter.keycloak_db_password.value}"
-  depends_on = [docker_container.mysql]
 }
 
 resource "mysql_grant" "keycloak" {
@@ -45,7 +43,7 @@ resource "docker_container" "keycloak" {
     "KC_PROXY=edge"
   ]
   networks_advanced {
-    name    = docker_network.organize_me_network.name
+    name    = data.docker_network.organize_me_network.name
     aliases = ["keycloak"]
     ipv4_address = "172.22.0.3"
   }

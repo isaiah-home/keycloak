@@ -2,14 +2,12 @@ resource "mysql_database" "wikijs" {
   default_character_set = "utf8mb3"
   default_collation     = "utf8mb3_general_ci"
   name                  = "wikijs"
-  depends_on = [docker_container.mysql]
 }
 
 resource "mysql_user" "wikijs" {
   user               = "${data.aws_ssm_parameter.wikijs_db_username.value}"
   host               = "172.22.0.4"
   plaintext_password = "${data.aws_ssm_parameter.wikijs_db_password.value}"
-  depends_on = [docker_container.mysql]
 }
 
 resource "mysql_grant" "wikijs" {
@@ -40,7 +38,7 @@ resource "docker_container" "wikijs" {
     "DB_NAME=wikijs"
   ]
   networks_advanced {
-    name    = docker_network.organize_me_network.name
+    name    = data.docker_network.organize_me_network.name
     aliases = ["wikijs"]
     ipv4_address = "172.22.0.4"
   }
