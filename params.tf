@@ -75,11 +75,6 @@ data "aws_ssm_parameter" "vaultwarden_admin_token" {
   name = "organize-me.vaultwarden_admin_token"
 }
 
-# --== Pi-hole  ==-- #
-data "aws_ssm_parameter" "pihole_webpassword" {
-  name = "organize-me.pihole_webpassword"
-}
-
 # --== Home-Portal ==-- #
 data "aws_ssm_parameter" "home_portal_db_username" {
   name = "organize-me.home_portal_db_username"

@@ -17,6 +17,8 @@ resource "docker_container" "mysql" {
   wait         = true
   wait_timeout = 90
 
+  network_mode = "bridge"
+
   env   = [
     "MYSQL_ROOT_PASSWORD=${data.aws_ssm_parameter.mysql_password.value}"
   ]
